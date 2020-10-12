@@ -2,8 +2,7 @@ FROM debian:buster-slim
 
 LABEL maintainer="admin@minenet.at"
 
-RUN export TZ=Europe/Rome && \
-	apt-get update && \
+RUN	apt-get update && \
 	apt-get -y install --no-install-recommends wget locales procps xvfb wmctrl x11vnc fluxbox screen novnc libxcomposite-dev && \
 	touch /etc/locale.gen && \
 	echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
@@ -37,7 +36,8 @@ RUN export TZ=Europe/Rome && \
 	rm -rf /var/lib/apt/lists/* && \
 	sed -i '/    document.title =/c\    document.title = "DebianBuster - noVNC";' /usr/share/novnc/app/ui.js && \
 	mkdir /tmp/config && \
-	rm /usr/share/novnc/app/images/icons/*
+	export TZ=Europe/Rome && \
+	rm /usr/share/novnc/app/images/icons/* 
 
 ENV DATA_DIR=/debian
 ENV FORCE_UPDATE=""
