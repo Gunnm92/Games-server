@@ -3,14 +3,13 @@ FROM debian:buster-slim
 LABEL maintainer="admin@minenet.at"
 
 RUN export TZ=Europe/Rome && \
-	apt-get -y install --no-install-recommends wget locales procps && \
+	apt-get update && \
+	apt-get -y install --no-install-recommends wget locales procps xvfb wmctrl x11vnc fluxbox screen novnc libxcomposite-dev && \
 	touch /etc/locale.gen && \
 	echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
 	locale-gen && \
 	apt-get -y install --reinstall ca-certificates && \
 	rm -rf /var/lib/apt/lists/* && \
-	apt-get update && \
-	apt-get -y install --no-install-recommends xvfb wmctrl x11vnc fluxbox screen novnc libxcomposite-dev && \
 	sed -i '/    document.title =/c\    document.title = "noVNC";' /usr/share/novnc/app/ui.js && \
 	rm -rf /var/lib/apt/lists/* && \
 	sed -i '/deb http:\/\/deb.debian.org\/debian buster main/c\deb http:\/\/deb.debian.org\/debian buster main non-free' /etc/apt/sources.list && \
