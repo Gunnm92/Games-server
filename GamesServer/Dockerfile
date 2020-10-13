@@ -2,7 +2,7 @@ FROM debian:buster-slim
 
 LABEL maintainer="admin@minenet.at"
 
-RUN 	apt-get update && \
+RUN apt-get update && \
 	apt-get -y install --no-install-recommends wget locales procps xvfb wmctrl x11vnc fluxbox screen novnc libxcomposite-dev && \
 	sed -i '/    document.title =/c\    document.title = "noVNC";' /usr/share/novnc/app/ui.js && \
   	touch /etc/locale.gen && \
