@@ -7,8 +7,17 @@ RUN sed -i '/deb http:\/\/deb.debian.org\/debian buster main/c\deb http:\/\/deb.
 	apt-get -y install --no-install-recommends wget locales procps xvfb wmctrl x11vnc fluxbox screen novnc libxcomposite-dev && \
   	touch /etc/locale.gen && \
   	echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
-  	locale-gen && \
-  	apt-get -y install --reinstall ca-certificates && \
+  	locale-gen
+
+COPY /x11vnc /usr/bin/x11vnc
+
+RUN chmod 751 /usr/bin/x11vnc && \
+	mkdir $DATA_DIR	&& \
+	useradd -d $DATA_DIR -s /bin/bash $USER && \
+	chown -R $USER $DATA_DIR && \
+	ulimit -n 2048
+
+RUN  apt-get -y install --reinstall ca-certificates && \
 	ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
 	echo $TZ > /etc/timezone && \
 	export TZ=Europe/Rome && \
@@ -49,14 +58,6 @@ ENV DEV=""
 ENV LC_ALL=en_US.UTF-8
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
-
-COPY /x11vnc /usr/bin/x11vnc
-
-RUN chmod 751 /usr/bin/x11vnc && \
-     mkdir $DATA_DIR	&& \
-     useradd -d $DATA_DIR -s /bin/bash $USER && \
-     chown -R $USER $DATA_DIR && \
-     ulimit -n 2048
 
 ADD /scripts/ /opt/scripts/
 COPY /icons/* /usr/share/novnc/app/images/icons/
