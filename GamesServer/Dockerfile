@@ -2,12 +2,13 @@ FROM debian:buster-slim
 
 LABEL maintainer="admin@minenet.at"
 
-RUN sed -i '/deb http:\/\/deb.debian.org\/debian buster main/c\deb http:\/\/deb.debian.org\/debian buster main non-free' /etc/apt/sources.list && \
-	apt-get update && \
+RUN 	apt-get update && \
 	apt-get -y install --no-install-recommends wget locales procps xvfb wmctrl x11vnc fluxbox screen novnc libxcomposite-dev && \
+	sed -i '/    document.title =/c\    document.title = "noVNC";' /usr/share/novnc/app/ui.js && \
   	touch /etc/locale.gen && \
   	echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
-  	locale-gen
+  	locale-gen && \
+	apt-get -y install --reinstall ca-certificates
 
 COPY /x11vnc /usr/bin/x11vnc
 
@@ -15,9 +16,9 @@ RUN chmod 751 /usr/bin/x11vnc && \
 	mkdir $DATA_DIR	&& \
 	useradd -d $DATA_DIR -s /bin/bash $USER && \
 	chown -R $USER $DATA_DIR && \
-	ulimit -n 2048
-
-RUN  apt-get -y install --reinstall ca-certificates && \
+	ulimit -n 2048 && \
+	sed -i '/deb http:\/\/deb.debian.org\/debian buster main/c\deb http:\/\/deb.debian.org\/debian buster main non-free' /etc/apt/sources.list && \
+	apt-get update && \
 	ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
 	echo $TZ > /etc/timezone && \
 	export TZ=Europe/Rome && \
