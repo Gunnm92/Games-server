@@ -18,11 +18,6 @@ ENV ROOT_PWD="Docker!"
 ENV DEV=""
 ENV USER_LOCALES="en_US.UTF-8 UTF-8"
 
-RUN mkdir $DATA_DIR	&& \
-	useradd -d $DATA_DIR -s /bin/bash $USER && \
-	chown -R $USER $DATA_DIR && \
-	ulimit -n 2048
-
 ADD /scripts/ /opt/scripts/
 COPY /icons/* /usr/share/novnc/app/images/icons/
 COPY /debian.png /usr/share/backgrounds/xfce/
