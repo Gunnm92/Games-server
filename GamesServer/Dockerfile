@@ -10,9 +10,9 @@ RUN apt-get update && apt-get -y install gnupg2 software-properties-common cabex
 RUN wget -qO - https://dl.winehq.org/wine-builds/winehq.key | apt-key add -
 RUN apt-add-repository https://dl.winehq.org/wine-builds/debian/
 RUN wget -O- -q https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/Debian_10/Release.key | apt-key add -
-RUN	echo "deb http://download.opensuse.org/repositories/Emulators:/Wine:/Debian/Debian_10 ./" | tee /etc/apt/sources.list.d/wine-obs.list
-RUN	apt-get update
-RUN	apt -y install --install-recommends winehq-stable
+RUN echo "deb http://download.opensuse.org/repositories/Emulators:/Wine:/Debian/Debian_10 ./" | tee /etc/apt/sources.list.d/wine-obs.list
+RUN apt-get update
+RUN apt -y install --install-recommends winehq-stable
 
 RUN cd /usr/bin/ && wget https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks
 RUN chmod +x /usr/bin/winetricks
