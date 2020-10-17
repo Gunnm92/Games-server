@@ -5,6 +5,14 @@ RUN wget -q https://download.opensuse.org/repositories/home:/strycore/Debian_10/
 RUN apt update
 RUN apt -y install --no-install-recommends lutris
 
+RUN dpkg --add-architecture i386
+RUN apt-get update && apt-get -y install cabextract
+RUN wget -O - https://dl.winehq.org/wine-builds/winehq.key | apt-key add -
+RUN echo 'deb https://dl.winehq.org/wine-builds/ubuntu/ eoan main' |tee /etc/apt/sources.list.d/winehq.list
+RUN apt-get update && apt-get -y install winehq-stable
+RUN cd /usr/bin/ && wget https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks
+RUN chmod +x /usr/bin/winetricks
+
 ENV DATA_DIR=/debian
 ENV FORCE_UPDATE=""
 ENV CUSTOM_RES_W=1280
@@ -17,6 +25,8 @@ ENV USER="Debian"
 ENV ROOT_PWD="Docker!"
 ENV DEV=""
 ENV USER_LOCALES="en_US.UTF-8 UTF-8"
+ENV WINEPREFIX /debian/prefix32
+ENV WINEARCH win32
 
 ADD /scripts/ /opt/scripts/
 COPY /icons/* /usr/share/novnc/app/images/icons/
