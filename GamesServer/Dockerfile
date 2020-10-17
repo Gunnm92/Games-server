@@ -1,9 +1,4 @@
 FROM ich777/debian-buster:nvidia-steam
-  
-RUN echo "deb http://download.opensuse.org/repositories/home:/strycore/Debian_10/ ./" | sudo tee /etc/apt/sources.list.d/lutris.list
-RUN wget -q https://download.opensuse.org/repositories/home:/strycore/Debian_10/Release.key -O- | sudo apt-key add -
-RUN apt update
-RUN apt -y install --no-install-recommends lutris
 
 RUN dpkg --add-architecture i386
 RUN apt-get update && apt-get -y install gnupg2 software-properties-common cabextract
@@ -14,8 +9,15 @@ RUN echo "deb http://download.opensuse.org/repositories/Emulators:/Wine:/Debian/
 RUN apt-get update
 RUN apt -y install --install-recommends winehq-stable
 
+RUN mkdir /tmp/wine/mono && wget -O - https://dl.winehq.org/wine/wine-mono/4.9.4/wine-mono-bin-4.9.4.tar.gz |tar -xzv -C /tmp/wine/mono 
+RUN mkdir /tmp/wine/gecko && wget -O /opt/wine-stable/share/wine/gecko/wine-gecko-2.47.1-x86.msi https://dl.winehq.org/wine/wine-gecko/2.47.1/wine-gecko-2.47.1-x86.msi && wget -O /opt/wine-stable/share/wine/gecko/wine-gecko-2.47.1-x86_64.msi https://dl.winehq.org/wine/wine-gecko/2.47.1/wine-gecko-2.47.1-x86_64.msi 
 RUN cd /usr/bin/ && wget https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks
 RUN chmod +x /usr/bin/winetricks
+
+RUN echo "deb http://download.opensuse.org/repositories/home:/strycore/Debian_10/ ./" | sudo tee /etc/apt/sources.list.d/lutris.list
+RUN wget -q https://download.opensuse.org/repositories/home:/strycore/Debian_10/Release.key -O- | sudo apt-key add -
+RUN apt update
+RUN apt -y install --no-install-recommends lutris
 
 ENV DATA_DIR=/debian
 ENV FORCE_UPDATE=""
