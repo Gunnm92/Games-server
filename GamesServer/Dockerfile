@@ -6,8 +6,7 @@ RUN apt update
 RUN apt -y install --no-install-recommends lutris
 
 RUN dpkg --add-architecture i386
-RUN apt-get update && apt-get -y install cabextract
-
+RUN apt-get update && apt-get -y install gnupg2 software-properties-common cabextract
 RUN	wget -qO - https://dl.winehq.org/wine-builds/winehq.key | apt-key add -
 RUN apt-add-repository https://dl.winehq.org/wine-builds/debian/
 RUN	wget -O- -q https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/Debian_10/Release.key | apt-key add -
@@ -15,9 +14,6 @@ RUN	echo "deb http://download.opensuse.org/repositories/Emulators:/Wine:/Debian/
 RUN	apt-get update
 RUN	apt -y install --install-recommends winehq-stable
 
-RUN wget -O - https://dl.winehq.org/wine-builds/winehq.key | apt-key add -
-RUN echo 'deb https://dl.winehq.org/wine-builds/debian/ buster main' |tee /etc/apt/sources.list.d/winehq.list
-RUN apt-get update && apt-get -y install winehq-stable
 RUN cd /usr/bin/ && wget https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks
 RUN chmod +x /usr/bin/winetricks
 
