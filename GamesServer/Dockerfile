@@ -6,7 +6,7 @@ RUN apt update
 RUN apt -y install --no-install-recommends lutris
 
 RUN dpkg --add-architecture i386
-RUN apt-get update && apt-get -y install cabextract
+RUN apt-get update && apt-get -y install cabextract wine wine32 wine64 libwine libwine:i386 fonts-wine
 RUN wget -O - https://dl.winehq.org/wine-builds/winehq.key | apt-key add -
 RUN echo 'deb https://dl.winehq.org/wine-builds/ubuntu/ eoan main' |tee /etc/apt/sources.list.d/winehq.list
 RUN apt-get update && apt-get -y install winehq-stable
