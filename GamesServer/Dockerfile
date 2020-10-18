@@ -24,8 +24,8 @@ ENV CUSTOM_RES_H=480
 COPY /x11vnc /usr/bin/x11vnc
 RUN chmod 751 /usr/bin/x11vnc
 
-RUN export TZ=Europe/Rome &&
-	dpkg --add-architecture i386 &&
+RUN export TZ=Europe/Rome
+RUN dpkg --add-architecture i386 &&
 	sed -i '/deb http:\/\/deb.debian.org\/debian buster main/c\deb http:\/\/deb.debian.org\/debian buster main non-free' /etc/apt/sources.list &&
 	apt-get update &&
 	ln -snf /usr/share/zoneinfo/$TZ /etc/localtime &&
