@@ -22,7 +22,7 @@ RUN export TZ=Europe/Rome && \
 	sed -i '/    document.title =/c\    document.title = "DebianBuster Nvidia - noVNC";' /usr/share/novnc/app/ui.js && \
 	mkdir /tmp/config
 
-RUN	echo "deb http://deb.debian.org/debian bullseye main" >> /etc/apt/sources.list && \
+RUN echo "deb http://deb.debian.org/debian bullseye main" >> /etc/apt/sources.list && \
 	apt-get update && \
 	apt-get -y install nano make gcc-9 bison flex bc libelf-dev squashfs-tools patch build-essential kmod cpio libncurses5-dev unzip rsync git curl bmake lsb-release libseccomp-dev libcap-dev pkg-config patchutils uuid-dev libblkid-dev libssl-dev dh-autoreconf libproc-processtable-perl beep zip libibmad-dev python3-dev python3-setuptools gperf && \
 	cd /tmp && \
