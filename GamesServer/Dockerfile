@@ -7,16 +7,14 @@ RUN apt-get update && \
 	touch /etc/locale.gen && \
 	echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
 	locale-gen && \
-	apt-get -y install --reinstall ca-certificates && \
-	rm -rf /var/lib/apt/lists/*
+	apt-get -y install --reinstall ca-certificates 
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
 
 RUN apt-get update && \
 	apt-get -y install --no-install-recommends xvfb wmctrl x11vnc fluxbox screen novnc libxcomposite-dev && \
-	sed -i '/    document.title =/c\    document.title = "noVNC";' /usr/share/novnc/app/ui.js && \
-	rm -rf /var/lib/apt/lists/*
+	sed -i '/    document.title =/c\    document.title = "noVNC";' /usr/share/novnc/app/ui.js
 
 ENV CUSTOM_RES_W=640
 ENV CUSTOM_RES_H=480
@@ -45,8 +43,7 @@ RUN dpkg --add-architecture i386 && \
 	p7zip -d /usr/share/locale/translation.7z && 	chmod -R 755 /usr/share/locale/ && \
 	rm -rf /var/lib/apt/lists/* && \
 	sed -i '/    document.title =/c\    document.title = "DebianBuster Nvidia - noVNC";' /usr/share/novnc/app/ui.js && \
-	mkdir /tmp/config && \
-	rm /usr/share/novnc/app/images/icons/*
+	mkdir /tmp/config
 
 RUN	echo "deb http://deb.debian.org/debian bullseye main" >> /etc/apt/sources.list && \
 	apt-get update && \
@@ -54,9 +51,7 @@ RUN	echo "deb http://deb.debian.org/debian bullseye main" >> /etc/apt/sources.li
 	cd /tmp && \
 	wget -q -nc --show-progress --progress=bar:force:noscroll -O go.tar.gz https://golang.org/dl/go1.15.linux-amd64.tar.gz && \
 	tar -C /usr/local -xvzf go.tar.gz && \
-	export PATH=$PATH:/usr/local/go/bin && \
-	rm -R /tmp/go* && \
-	rm -rf /var/lib/apt/lists/*
+	export PATH=$PATH:/usr/local/go/bin
 
 RUN rm -R /lib/x86_64-linux-gnu/liblzma.* && \
 	cd /tmp && \
@@ -65,6 +60,11 @@ RUN rm -R /lib/x86_64-linux-gnu/liblzma.* && \
 	rm /tmp/xz.tar && \
 	wget -q -nc --show-progress --progress=bar:force:noscroll https://github.com/ich777/python-unraid/raw/3.8.5/python-3.8.5-x86_64-1.tgz && \
 	wget -q -nc --show-progress --progress=bar:force:noscroll https://github.com/ich777/python-unraid/raw/3.7.3/gobject-introspection-1.46.0-x86_64-1.txz
+
+RUN rm -R /tmp/go*
+RUN rm -rf /var/lib/apt/lists/*
+
+RUN rm /usr/share/novnc/app/images/icons/*
 
 ENV DATA_DIR="/usr/src"
 ENV UNRAID_V=6.9.0
