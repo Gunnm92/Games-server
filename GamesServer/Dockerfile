@@ -1,7 +1,7 @@
 FROM ich777/debian-buster:nvidia-steam
 
 RUN dpkg --add-architecture i386
-RUN apt-get update && apt-get -y install gnupg2 software-properties-common cabextract
+RUN apt-get update && apt-get -y install gnupg2 software-properties-common cabextract libgnutls30:i386 libldap-2.4-2:i386 libgpg-error0:i386 libxml2:i386 libasound2-plugins:i386 libsdl2-2.0-0:i386 libfreetype6:i386 libdbus-1-3:i386 libsqlite3-0:i386
 RUN wget -qO - https://dl.winehq.org/wine-builds/winehq.key | apt-key add -
 RUN apt-add-repository https://dl.winehq.org/wine-builds/debian/
 RUN wget -O- -q https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/Debian_10/Release.key | apt-key add -
@@ -15,7 +15,7 @@ RUN chmod +x /usr/bin/winetricks
 RUN echo "deb http://download.opensuse.org/repositories/home:/strycore/Debian_10/ ./" | sudo tee /etc/apt/sources.list.d/lutris.list
 RUN wget -q https://download.opensuse.org/repositories/home:/strycore/Debian_10/Release.key -O- | sudo apt-key add -
 RUN apt update
-RUN apt -y install --no-install-recommends lutris
+RUN apt -y install --no-install-recommends lutris libvulkan1 libvulkan1:i386 libgl1-mesa-dri:i386	mesa-vulkan-drivers mesa-vulkan-drivers:i386 dbus-x11 zenity
 
 ENV DATA_DIR=/debian
 ENV FORCE_UPDATE=""
