@@ -1,24 +1,24 @@
-FROM debian:buster-slim
+FROM ich777/debian-baseimage
 
 LABEL maintainer="admin@minenet.at"
 
-RUN apt-get update && \
-	apt-get -y install --no-install-recommends wget locales procps && \
-	touch /etc/locale.gen && \
-	echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
-	locale-gen && \
-	apt-get -y install --reinstall ca-certificates 
-ENV LANG=en_US.UTF-8
-ENV LANGUAGE=en_US:en
-ENV LC_ALL=en_US.UTF-8
-
-RUN echo "deb http://deb.debian.org/debian bullseye main" >> /etc/apt/sources.list && \
+RUN	echo "deb http://deb.debian.org/debian bullseye main" >> /etc/apt/sources.list && \
 	apt-get update && \
 	apt-get -y install nano make gcc-9 bison flex bc libelf-dev squashfs-tools patch build-essential kmod cpio libncurses5-dev unzip rsync git curl bmake lsb-release libseccomp-dev libcap-dev pkg-config patchutils uuid-dev libblkid-dev libssl-dev dh-autoreconf libproc-processtable-perl beep zip libibmad-dev python3-dev python3-setuptools gperf && \
 	cd /tmp && \
 	wget -q -nc --show-progress --progress=bar:force:noscroll -O go.tar.gz https://golang.org/dl/go1.15.linux-amd64.tar.gz && \
 	tar -C /usr/local -xvzf go.tar.gz && \
-	export PATH=$PATH:/usr/local/go/bin
+	export PATH=$PATH:/usr/local/go/bin && \
+	rm -R /tmp/go* && \
+	rm -rf /var/lib/apt/lists/*
+
+RUN rm -R /lib/x86_64-linux-gnu/liblzma.* && \
+	cd /tmp && \
+	wget -q -nc --show-progress --progress=bar:force:noscroll -O xz.tar https://github.com/ich777/xz/releases/download/5.2.5/xz-v5.2.5.tar.gz && \
+	tar -C / -xvf /tmp/xz.tar && \
+	rm /tmp/xz.tar && \
+	wget -q -nc --show-progress --progress=bar:force:noscroll https://github.com/ich777/python-unraid/raw/3.8.5/python-3.8.5-x86_64-1.tgz && \
+	wget -q -nc --show-progress --progress=bar:force:noscroll https://github.com/ich777/python-unraid/raw/3.7.3/gobject-introspection-1.46.0-x86_64-1.txz
 
 RUN export TZ=Europe/Rome && \
 	dpkg --add-architecture i386 && \
