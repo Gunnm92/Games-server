@@ -1,5 +1,12 @@
 FROM ich777/debian-buster:nvidia-steam
 
+RUN distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
+RUN curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey && apt-key add -
+RUN curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list && tee /etc/apt/sources.list.d/nvidia-docker.list
+RUN apt-get update
+RUN apt-get -y install --install-recommends
+RUN apt-get install -y nvidia-docker2
+
 RUN dpkg --add-architecture i386
 RUN apt-get update && apt-get -y install gnupg2 software-properties-common cabextract libgnutls30:i386 libldap-2.4-2:i386 libgpg-error0:i386 libxml2:i386 libasound2-plugins:i386 libsdl2-2.0-0:i386 libfreetype6:i386 libdbus-1-3:i386 libsqlite3-0:i386
 RUN wget -qO - https://dl.winehq.org/wine-builds/winehq.key | apt-key add -
@@ -7,7 +14,7 @@ RUN apt-add-repository https://dl.winehq.org/wine-builds/debian/
 RUN wget -O- -q https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/Debian_10/Release.key | apt-key add -
 RUN echo "deb http://download.opensuse.org/repositories/Emulators:/Wine:/Debian/Debian_10 ./" | tee /etc/apt/sources.list.d/wine-obs.list
 RUN apt-get update
-RUN apt -y install --install-recommends winehq-stable
+RUN apt-get -y install --install-recommends winehq-stable
  
 RUN cd /usr/bin/ && wget https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks
 RUN chmod +x /usr/bin/winetricks
