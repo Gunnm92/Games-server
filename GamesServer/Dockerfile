@@ -41,20 +41,17 @@ RUN dpkg --add-architecture i386 && \
 	cd /usr/share/locale && \
 	wget -O /usr/share/locale/translation.7z https://github.com/ich777/docker-debian-buster/raw/master/translation.7z && \
 	p7zip -d /usr/share/locale/translation.7z && 	chmod -R 755 /usr/share/locale/ && \
-	rm -rf /var/lib/apt/lists/* && \
 	sed -i '/    document.title =/c\    document.title = "DebianBuster Nvidia - noVNC";' /usr/share/novnc/app/ui.js && \
 	mkdir /tmp/config
 
-RUN	echo "deb http://deb.debian.org/debian bullseye main" >> /etc/apt/sources.list && \
-	apt-get update && \
+RUN apt-get update && \
 	apt-get -y install nano make gcc-9 bison flex bc libelf-dev squashfs-tools patch build-essential kmod cpio libncurses5-dev unzip rsync git curl bmake lsb-release libseccomp-dev libcap-dev pkg-config patchutils uuid-dev libblkid-dev libssl-dev dh-autoreconf libproc-processtable-perl beep zip libibmad-dev python3-dev python3-setuptools gperf && \
 	cd /tmp && \
 	wget -q -nc --show-progress --progress=bar:force:noscroll -O go.tar.gz https://golang.org/dl/go1.15.linux-amd64.tar.gz && \
 	tar -C /usr/local -xvzf go.tar.gz && \
 	export PATH=$PATH:/usr/local/go/bin
 
-RUN rm -R /lib/x86_64-linux-gnu/liblzma.* && \
-	cd /tmp && \
+RUN cd /tmp && \
 	wget -q -nc --show-progress --progress=bar:force:noscroll -O xz.tar https://github.com/ich777/xz/releases/download/5.2.5/xz-v5.2.5.tar.gz && \
 	tar -C / -xvf /tmp/xz.tar && \
 	rm /tmp/xz.tar && \
@@ -63,7 +60,7 @@ RUN rm -R /lib/x86_64-linux-gnu/liblzma.* && \
 
 RUN rm -R /tmp/go*
 RUN rm -rf /var/lib/apt/lists/*
-
+RUN rm -R /lib/x86_64-linux-gnu/liblzma.* 
 RUN rm /usr/share/novnc/app/images/icons/*
 
 ENV DATA_DIR="/usr/src"
