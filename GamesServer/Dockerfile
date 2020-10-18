@@ -12,18 +12,16 @@ ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
 
-RUN apt-get update && \
-	apt-get -y install --no-install-recommends xvfb wmctrl x11vnc fluxbox screen novnc libxcomposite-dev && \
-	sed -i '/    document.title =/c\    document.title = "noVNC";' /usr/share/novnc/app/ui.js
+RUN echo "deb http://deb.debian.org/debian bullseye main" >> /etc/apt/sources.list && \
+	apt-get update && \
+	apt-get -y install nano make gcc-9 bison flex bc libelf-dev squashfs-tools patch build-essential kmod cpio libncurses5-dev unzip rsync git curl bmake lsb-release libseccomp-dev libcap-dev pkg-config patchutils uuid-dev libblkid-dev libssl-dev dh-autoreconf libproc-processtable-perl beep zip libibmad-dev python3-dev python3-setuptools gperf && \
+	cd /tmp && \
+	wget -q -nc --show-progress --progress=bar:force:noscroll -O go.tar.gz https://golang.org/dl/go1.15.linux-amd64.tar.gz && \
+	tar -C /usr/local -xvzf go.tar.gz && \
+	export PATH=$PATH:/usr/local/go/bin
 
-ENV CUSTOM_RES_W=640
-ENV CUSTOM_RES_H=480
-
-COPY /x11vnc /usr/bin/x11vnc
-RUN chmod 751 /usr/bin/x11vnc
-
-RUN export TZ=Europe/Rome
-RUN dpkg --add-architecture i386 && \
+RUN export TZ=Europe/Rome && \
+	dpkg --add-architecture i386 && \
 	sed -i '/deb http:\/\/deb.debian.org\/debian buster main/c\deb http:\/\/deb.debian.org\/debian buster main non-free' /etc/apt/sources.list && \
 	apt-get update && \
 	ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
@@ -44,24 +42,12 @@ RUN dpkg --add-architecture i386 && \
 	sed -i '/    document.title =/c\    document.title = "DebianBuster Nvidia - noVNC";' /usr/share/novnc/app/ui.js && \
 	mkdir /tmp/config
 
-RUN apt-get update && \
-	apt-get -y install nano make gcc-9 bison flex bc libelf-dev squashfs-tools patch build-essential kmod cpio libncurses5-dev unzip rsync git curl bmake lsb-release libseccomp-dev libcap-dev pkg-config patchutils uuid-dev libblkid-dev libssl-dev dh-autoreconf libproc-processtable-perl beep zip libibmad-dev python3-dev python3-setuptools gperf && \
-	cd /tmp && \
-	wget -q -nc --show-progress --progress=bar:force:noscroll -O go.tar.gz https://golang.org/dl/go1.15.linux-amd64.tar.gz && \
-	tar -C /usr/local -xvzf go.tar.gz && \
-	export PATH=$PATH:/usr/local/go/bin
-
 RUN cd /tmp && \
 	wget -q -nc --show-progress --progress=bar:force:noscroll -O xz.tar https://github.com/ich777/xz/releases/download/5.2.5/xz-v5.2.5.tar.gz && \
 	tar -C / -xvf /tmp/xz.tar && \
 	rm /tmp/xz.tar && \
 	wget -q -nc --show-progress --progress=bar:force:noscroll https://github.com/ich777/python-unraid/raw/3.8.5/python-3.8.5-x86_64-1.tgz && \
 	wget -q -nc --show-progress --progress=bar:force:noscroll https://github.com/ich777/python-unraid/raw/3.7.3/gobject-introspection-1.46.0-x86_64-1.txz
-
-RUN rm -R /tmp/go*
-RUN rm -rf /var/lib/apt/lists/*
-RUN rm -R /lib/x86_64-linux-gnu/liblzma.* 
-RUN rm /usr/share/novnc/app/images/icons/*
 
 ENV DATA_DIR="/usr/src"
 ENV UNRAID_V=6.9.0
@@ -119,6 +105,18 @@ RUN echo "deb http://download.opensuse.org/repositories/home:/strycore/Debian_10
 RUN wget -q https://download.opensuse.org/repositories/home:/strycore/Debian_10/Release.key -O- | sudo apt-key add -
 RUN apt update
 RUN apt -y install --no-install-recommends lutris libvulkan1 libvulkan1:i386 libgl1-mesa-dri:i386 mesa-vulkan-drivers mesa-vulkan-drivers:i386 dbus-x11 zenity
+
+RUN apt-get update && \
+	apt-get -y install --no-install-recommends xvfb wmctrl x11vnc fluxbox screen novnc libxcomposite-dev && \
+	sed -i '/    document.title =/c\    document.title = "noVNC";' /usr/share/novnc/app/ui.js
+
+COPY /x11vnc /usr/bin/x11vnc
+RUN chmod 751 /usr/bin/x11vnc
+
+RUN rm -R /tmp/go*
+RUN rm -rf /var/lib/apt/lists/*
+RUN rm -R /lib/x86_64-linux-gnu/liblzma.* 
+RUN rm /usr/share/novnc/app/images/icons/*
 
 ENV DATA_DIR=/debian
 ENV FORCE_UPDATE=""
