@@ -31,8 +31,8 @@ ENV DEV=""
 ENV USER_LOCALES="en_US.UTF-8 UTF-8"
 ENV NV_DRV_V=
 ENV DISPLAY=:0
-ENV ENABLE_VNC_SRV=true
-ENV NVIDIA_BUILD_OPTS=-a -N -q --install-libglvnd --ui=none --no-kernel-module
+ENV ENABLE_VNC_SRV="true"
+ENV NVIDIA_BUILD_OPTS="-a -N -q --install-libglvnd --ui=none --no-kernel-module"
 ENV PCI_ADDR=
 ENV V_TERM_NR=0
 ENV DFP_NR=1
