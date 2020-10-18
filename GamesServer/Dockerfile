@@ -39,9 +39,8 @@ ENV DFP_NR=1
 ENV WINEPREFIX /debian/prefix32
 ENV WINEARCH win32
 
-RUN useradd -d $DATA_DIR -s /bin/bash $USER && \
-	chown -R $USER $DATA_DIR && \
-	ulimit -n 2048
+RUN chown -R $USER $DATA_DIR
+RUN ulimit -n 2048
 
 ADD /scripts/ /opt/scripts/
 COPY /icons/* /usr/share/novnc/app/images/icons/
