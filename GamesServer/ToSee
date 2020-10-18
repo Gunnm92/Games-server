@@ -1,0 +1,23 @@
+/bin/sh -c export TZ=Europe/Rome && 	
+dpkg --add-architecture i386 && 	
+sed -i '/deb http:\/\/deb.debian.org\/debian buster main/c\deb http:\/\/deb.debian.org\/debian buster main non-free' /etc/apt/sources.list && 	
+apt-get update && 	
+ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && 	
+echo $TZ > /etc/timezone && 	
+echo steam steam/question select "I AGREE" | debconf-set-selections && 	
+echo steam steam/license note '' | debconf-set-selections && 	
+DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends man-db hdparm udev whiptail reportbug init vim-common iproute2 nano gdbm-l10n less iputils-ping netcat-traditional perl bzip2 gettext-base manpages file liblockfile-bin python3-reportbug libnss-systemd isc-dhcp-common systemd-sysv xz-utils perl-modules-5.28 debian-faq wamerican bsdmainutils systemd cpio logrotate traceroute kmod isc-dhcp-client telnet krb5-locales lsof debconf-i18n cron ncurses-term iptables ifupdown procps rsyslog apt-utils netbase pciutils bash-completion vim-tiny groff-base apt-listchanges bind9-host doc-debian libpam-systemd openssh-client xfce4 xorg dbus-x11 sudo gvfs-backends gvfs-common gvfs-fuse gvfs firefox-esr at-spi2-core gpg-agent mousepad xarchiver sylpheed unzip gtk2-engines-pixbuf gnome-themes-standard lxtask xfce4-terminal p7zip unrar gcc make dbus pulseaudio xserver-xorg-legacy steam pavucontrol curl steam-devices && 	apt-get remove xterm && 	cd /tmp && 	wget -O /tmp/theme.tar.gz https://gitlab.manjaro.org/artwork/themes/breath-gtk/-/archive/master/breath-gtk-master.tar.gz && 	tar -xvf /tmp/theme.tar.gz && 	
+mv /tmp/breath*/Breath-Dark /usr/share/themes/ && 	
+rm -R /tmp/breath* && 	rm /tmp/theme.tar.gz && 	
+wget -O /tmp/icons.zip https://github.com/daniruiz/flat-remix/archive/master.zip && 	
+unzip /tmp/icons.zip && 	
+mv /tmp/flat*/Flat-Remix-Green-Dark/ /usr/share/icons/ &&	
+rm -R /tmp/flat* && 	rm /tmp/icons.zip && 	
+gtk-update-icon-cache -f -t /usr/share/icons/Flat-Remix-Green-Dark/ && 	
+cd /usr/share/locale && 	
+wget -O /usr/share/locale/translation.7z https://github.com/ich777/docker-debian-buster/raw/master/translation.7z && 	
+p7zip -d /usr/share/locale/translation.7z && 	chmod -R 755 /usr/share/locale/ && 	
+rm -rf /var/lib/apt/lists/* && 	
+sed -i '/    document.title =/c\    document.title = "DebianBuster Nvidia - noVNC";' /usr/share/novnc/app/ui.js && 	
+mkdir /tmp/config && 	
+rm /usr/share/novnc/app/images/icons/*
