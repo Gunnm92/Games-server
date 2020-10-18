@@ -15,7 +15,7 @@ RUN chmod +x /usr/bin/winetricks
 RUN echo "deb http://download.opensuse.org/repositories/home:/strycore/Debian_10/ ./" | sudo tee /etc/apt/sources.list.d/lutris.list
 RUN wget -q https://download.opensuse.org/repositories/home:/strycore/Debian_10/Release.key -O- | sudo apt-key add -
 RUN apt update
-RUN apt -y install --no-install-recommends lutris libvulkan1 libvulkan1:i386 libgl1-mesa-dri:i386	mesa-vulkan-drivers mesa-vulkan-drivers:i386 dbus-x11 zenity
+RUN apt -y install --no-install-recommends lutris libvulkan1 libvulkan1:i386 libgl1-mesa-dri:i386 mesa-vulkan-drivers mesa-vulkan-drivers:i386 dbus-x11 zenity
 
 ENV DATA_DIR=/debian
 ENV FORCE_UPDATE=""
@@ -29,6 +29,13 @@ ENV USER="Debian"
 ENV ROOT_PWD="Docker!"
 ENV DEV=""
 ENV USER_LOCALES="en_US.UTF-8 UTF-8"
+ENV NV_DRV_V=
+ENV DISPLAY=:0
+ENV ENABLE_VNC_SRV=true
+ENV NVIDIA_BUILD_OPTS=-a -N -q
+ENV PCI_ADDR=
+ENV V_TERM_NR=0
+ENV DFP_NR=1
 ENV WINEPREFIX /debian/prefix32
 ENV WINEARCH win32
 
