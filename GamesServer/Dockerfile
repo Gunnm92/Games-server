@@ -1,7 +1,7 @@
 ARG VERSION
 
 FROM archlinux:${VERSION:-latest}
-LABEL MAINTAINER="DCsunset"
+LABEL MAINTAINER="Gunnm92"
 
 ENV noVNC_version=1.2.0
 ENV websockify_version=0.9.0
