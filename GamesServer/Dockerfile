@@ -1,52 +1,40 @@
-FROM ich777/debian-buster:nvidia-steam
+ARG VERSION
 
-RUN dpkg --add-architecture i386
-RUN apt-get update && apt-get -y install gnupg2 software-properties-common cabextract libgnutls30:i386 libldap-2.4-2:i386 libgpg-error0:i386 libxml2:i386 libasound2-plugins:i386 libsdl2-2.0-0:i386 libfreetype6:i386 libdbus-1-3:i386 libsqlite3-0:i386
-RUN wget -qO - https://dl.winehq.org/wine-builds/winehq.key | apt-key add -
-RUN apt-add-repository https://dl.winehq.org/wine-builds/debian/
-RUN wget -O- -q https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/Debian_10/Release.key | apt-key add -
-RUN echo "deb http://download.opensuse.org/repositories/Emulators:/Wine:/Debian/Debian_10 ./" | tee /etc/apt/sources.list.d/wine-obs.list
-RUN apt-get update
-RUN apt -y install --install-recommends winehq-stable
- 
-RUN cd /usr/bin/ && wget https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks
-RUN chmod +x /usr/bin/winetricks
+FROM archlinux:${VERSION:-latest}
+LABEL MAINTAINER="DCsunset"
 
-RUN echo "deb http://download.opensuse.org/repositories/home:/strycore/Debian_10/ ./" | sudo tee /etc/apt/sources.list.d/lutris.list
-RUN wget -q https://download.opensuse.org/repositories/home:/strycore/Debian_10/Release.key -O- | sudo apt-key add -
-RUN apt update
-RUN apt -y install --no-install-recommends lutris libvulkan1 libvulkan1:i386 libgl1-mesa-dri:i386 mesa-vulkan-drivers mesa-vulkan-drivers:i386 dbus-x11 zenity
+ENV noVNC_version=1.2.0
+ENV websockify_version=0.9.0
 
-ENV DATA_DIR=/debian
-ENV FORCE_UPDATE=""
-ENV CUSTOM_RES_W=1280
-ENV CUSTOM_RES_H=720
-ENV UMASK=000
-ENV UID=99
-ENV GID=100
-ENV DATA_PERM=770
-ENV USER="Debian"
-ENV ROOT_PWD="Docker!"
-ENV DEV=""
-ENV USER_LOCALES="en_US.UTF-8 UTF-8"
-ENV NV_DRV_V=
-ENV DISPLAY=:0
-ENV ENABLE_VNC_SRV="true"
-ENV NVIDIA_BUILD_OPTS="-a -N -q --install-libglvnd --ui=none --no-kernel-module"
-ENV PCI_ADDR=
-ENV V_TERM_NR=0
-ENV DFP_NR=1
-ENV WINEPREFIX /debian/prefix32
-ENV WINEARCH win32
+# Local debug
+# COPY ./mirrorlist /etc/pacman.d/mirrorlist 
+# COPY ./websockify-${websockify_version}.tar.gz /websockify.tar.gz
+# COPY ./noVNC-${noVNC_version}.tar.gz /noVNC.tar.gz
 
-ADD /scripts/ /opt/scripts/
-COPY /icons/* /usr/share/novnc/app/images/icons/
-COPY /debian.png /usr/share/backgrounds/xfce/
-COPY /config/* /tmp/config/
-RUN chmod -R 770 /opt/scripts/
-RUN chmod -R 770 /tmp/config/
+# Install apps
+RUN pacman -Syu --noconfirm plasma-meta \
+	kde-accessibility-meta kde-system-meta konsole \
+	chromium vim wget tigervnc xorg-server \
+	python-numpy python-setuptools \
+	&& pacman -Scc --noconfirm
 
-EXPOSE 8080
+# Install noVNC
+RUN	wget https://github.com/novnc/websockify/archive/v${websockify_version}.tar.gz -O /websockify.tar.gz \
+	&& tar -xvf /websockify.tar.gz -C / \
+	&& cd /websockify-${websockify_version} \
+	&& python setup.py install \
+	&& cd / && rm -r /websockify.tar.gz /websockify-${websockify_version} \
+	&& wget https://github.com/novnc/noVNC/archive/v${noVNC_version}.tar.gz -O /noVNC.tar.gz \
+	&& tar -xvf /noVNC.tar.gz -C / \
+	&& cd /noVNC-${noVNC_version} \
+	&& ln -s vnc.html index.html \
+	&& rm /noVNC.tar.gz
 
-#Server Start
-ENTRYPOINT ["/opt/scripts/start.sh"]
+COPY ./config/xstartup /root/.vnc/
+COPY ./start.sh /
+
+WORKDIR /root
+
+EXPOSE 5900 6080
+
+CMD [ "/start.sh" ]
