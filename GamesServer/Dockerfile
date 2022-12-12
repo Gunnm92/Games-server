@@ -1,8 +1,8 @@
 FROM archlinux/archlinux
 LABEL MAINTAINER="Gunnm92"
 
-ENV noVNC_version=1.2.0
-ENV websockify_version=0.9.0
+ENV noVNC_version=1.3.0
+ENV websockify_version=0.10.0
 
 # Local debug
 # COPY ./mirrorlist /etc/pacman.d/mirrorlist 
