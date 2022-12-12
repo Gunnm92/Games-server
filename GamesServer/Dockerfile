@@ -17,7 +17,7 @@ RUN echo -e " \n\
     useradd -m default
 RUN pacman -Syu --noconfirm plasma-meta \
 	xorg plasma plasma-wayland-session kde-applications \
-	chromium vim wget xorg-server \
+	chromium nano wget xorg-server \
 	tigervnc \
 	python-numpy python-setuptools \
     wine winetricks wine-mono wine_gecko vulkan-icd-loader lib32-vulkan-icd-loader vkd3d lib32-vkd3d gvfs \
