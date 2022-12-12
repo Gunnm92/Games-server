@@ -1,0 +1,6 @@
+    chromium nano \
+    wine winetricks wine-mono wine_gecko \
+	vulkan-icd-loader lib32-vulkan-icd-loader vkd3d lib32-vkd3d gvfs \
+    lutris \
+    steam \
+	nginx \
