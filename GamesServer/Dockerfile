@@ -43,4 +43,6 @@ WORKDIR /root
 
 EXPOSE 5900 6080
 
+RUN chmod +x /start.sh
+
 CMD [ "/start.sh" ]
