@@ -17,4 +17,8 @@ else
 fi
 
 # Start noVNC
+<<<<<<< HEAD
 /noVNC-${noVNC_version}/utils/launch.sh
+=======
+/noVNC-${noVNC_version}/utils/launch.sh
+>>>>>>> fd8352b0292e850ac670f8612de64285fb03dbb4

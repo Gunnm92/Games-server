@@ -1,6 +1,6 @@
 ARG VERSION
 
-FROM archlinux:${VERSION:-latest}
+FROM archlinux/archlinux:${VERSION:-latest}
 LABEL MAINTAINER="Gunnm92"
 
 ENV noVNC_version=1.2.0

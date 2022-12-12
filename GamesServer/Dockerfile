@@ -10,17 +10,10 @@ ENV websockify_version=0.9.0
 # COPY ./noVNC-${noVNC_version}.tar.gz /noVNC.tar.gz
 
 # Install apps
-RUN echo -e " \n\
-    [multilib] \n\
-    Include = /etc/pacman.d/mirrorlist \n\
-    " >> /etc/pacman.conf
 RUN pacman -Syu --noconfirm plasma-meta \
-	xorg plasma plasma-wayland-session kde-applications \
+	kde-accessibility-meta kde-system-meta konsole \
 	chromium vim wget tigervnc xorg-server \
 	python-numpy python-setuptools \
-    wine winetricks wine-mono wine_gecko vulkan-icd-loader lib32-vulkan-icd-loader vkd3d lib32-vkd3d gvfs \
-    lutris \
-    steam \
 	&& pacman -Scc --noconfirm
 
 # Install noVNC
